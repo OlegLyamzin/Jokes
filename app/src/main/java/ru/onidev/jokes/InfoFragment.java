@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-
+/**
+ * Фрагмент с информацией об api
+ */
 public class InfoFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Сохранять состояние для восстановления при повороте
         setRetainInstance(true);
     }
 
@@ -22,7 +25,6 @@ public class InfoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_info, container, false);
         WebView webView = v.findViewById(R.id.webView);
         // включаем поддержку JavaScript

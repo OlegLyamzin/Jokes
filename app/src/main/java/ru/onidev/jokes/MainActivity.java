@@ -14,6 +14,11 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    /**
+     * В методе onCreate() создается боковое меню и запускается фрагмент с шутками,
+     * если нет сохраненного состояния
+     * @param savedInstanceState сохраненное состояние
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +40,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Метод, запускающий фрагмент на главном экране
+     * @param fragment Фрагмент, который запускается
+     */
     private void showFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
@@ -42,6 +51,9 @@ public class MainActivity extends AppCompatActivity
                 .commitAllowingStateLoss();
     }
 
+    /**
+     * При нажатии кнопки назад, если открыто боковое меню, то оно скрывается
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -52,6 +64,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Выбор в боковом меню
+     * @param item пункт, который был выбран
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

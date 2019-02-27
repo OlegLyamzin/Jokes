@@ -23,7 +23,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-
+/**
+ * Фрагмент с шутками
+ */
 public class JokesFragment extends Fragment {
     private HandlerWorker handlerWorker;
     private Handler mUIHandler = new Handler();
@@ -33,24 +35,29 @@ public class JokesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Сохранять состояние для восстановления при повороте
         setRetainInstance(true);
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_jokes, container, false);
 
+        // Подготовка handler для работы не в главном потоке
         handlerWorker = new HandlerWorker("handlerWorker");
         handlerWorker.start();
         handlerWorker.prepareHandler();
 
+        // Главный Linear Layout куда будут помещаться шутки
         linearLayout = v.findViewById(R.id.linearLayoutJokes);
         makeList(getContext());
 
         v.findViewById(R.id.reloadButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // При нажатии очистить главный Linear Layout, массив с шутками и запуск нового запроса
                 linearLayout.removeAllViews();
                 jokes.clear();
                 EditText editText = v.findViewById(R.id.editText);
@@ -61,6 +68,11 @@ public class JokesFragment extends Fragment {
         return v;
     }
 
+    /**
+     * Метод, запускающий запрос к серверу с шутками
+     * @param context контекст приложения
+     * @param count сколько нужно шуток запросить
+     */
     public void startRequest(final Context context, final int count) {
         handlerWorker.postTask(new Runnable() {
             @Override
@@ -82,12 +94,15 @@ public class JokesFragment extends Fragment {
                                 response.append(inputLine);
                             }
                             in.close();
+
+                            // Заполнение массива объектов шутками из полученного JSON
                             JSONArray jArray = new JSONObject(response.toString()).getJSONArray("value");
                             if (jArray != null) {
                                 for (int i = 0; i < jArray.length(); i++) {
                                     jokes.add(Joke.parse(jArray.getJSONObject(i)));
                                 }
                             }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -99,6 +114,10 @@ public class JokesFragment extends Fragment {
         });
     }
 
+    /**
+     * Метод, создающий список шуток на главном Linear Layout
+     * @param context контекст приложения
+     */
     private void makeList(final Context context) {
         for (int i = 0; i < jokes.size(); i++) {
             final int finalI = i;
@@ -118,6 +137,11 @@ public class JokesFragment extends Fragment {
         }
     }
 
+    /**
+     * Создание отдельной шутки и добавление в главный Linear Layout
+     * @param joke объект шутки
+     * @param context контекст приложения
+     */
     @SuppressLint("SetTextI18n")
     public synchronized void createNewElement(Joke joke, Context context) {
 

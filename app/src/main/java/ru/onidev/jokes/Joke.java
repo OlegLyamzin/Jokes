@@ -7,6 +7,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Класс Шутка, содержащий текст шутки, id и категории
+ */
 public class Joke {
     private int id;
     private String jokeText;
@@ -18,6 +21,11 @@ public class Joke {
         this.categories = categories;
     }
 
+    /**
+     * Статический парсер Json объекта
+     * @param json Json объект
+     * @return новый объект класса Joke
+     */
     static Joke parse(JSONObject json){
         int id = 0;
         String joke = "nothing";
